@@ -116,3 +116,173 @@ app.post('/auth/logout', (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`🚀 API running at http://localhost:${PORT}`));
+
+// --- USER DETAILS ---
+app.get('/hq/v1/accounts/:accountId/users/:userId', verifyAccessToken, (req, res) => {
+  const { accountId, userId } = req.params;
+  res.json({
+    id: userId,
+    account_id: accountId,
+    status: "active",
+    role: "account_admin",
+    company_id: "28e4e819-8ab2-432c-b3fb-3a94b53a91cd",
+    company_name: "Autodesk",
+    last_sign_in: "2016-04-05T07:27:20.858Z",
+    email: "john.smith@autodesk.com",
+    name: "John Smith",
+    nickname: "Johnny",
+    first_name: "John",
+    last_name: "Smith",
+    uid: "L9EBJKCGCXBB",
+    image_url: "http://static-dc.autodesk.net/etc/designs/v201412151200/autodesk/adsk-design/images/autodesk_header_logo_140x23.png",
+    address_line_1: "The Fifth Avenue",
+    address_line_2: "#301",
+    city: "New York",
+    postal_code: "10011",
+    state_or_province: "New York",
+    country: "United States",
+    phone: "(634)329-2353",
+    company: "Autodesk",
+    job_title: "Software Developer",
+    industry: "IT",
+    about_me: "Nothing here",
+    default_role: "BIM Manager",
+    default_role_id: "4e7e02ae-2994-4210-9153-84bfb9a23a63",
+    created_at: "2015-06-26T14:47:39.458Z",
+    updated_at: "2016-04-07T07:15:29.261Z"
+  });
+});
+
+
+// --- PROJECTS LIST ---
+app.get('/construction/admin/v1/accounts/:accountId/users/:userId/projects', verifyAccessToken, (req, res) => {
+  res.json({
+    pagination: {
+      limit: 20,
+      offset: 10,
+      totalResults: 121,
+      nextUrl: "https://resource?limit=20&offset=30",
+      previousUrl: "https://resource?limit=20&offset=0"
+    },
+    results: [
+      {
+        id: "3e354e66-ac8b-41dd-9bc1-93fc182c25dd",
+        name: "Sample Project",
+        startDate: "2010-01-01",
+        endDate: "2015-12-31",
+        type: "Hospital",
+        classification: "production",
+        projectValue: { value: 1650000, currency: "USD" },
+        status: "active",
+        jobNumber: "HP-0002",
+        addressLine1: "123 Main Street",
+        addressLine2: "Suite 2",
+        city: "San Francisco",
+        stateOrProvince: "California",
+        postalCode: "94001",
+        country: "United States",
+        latitude: "37.773972",
+        longitude: "-122.431297",
+        timezone: "America/Los_Angeles",
+        constructionType: "New Construction",
+        deliveryMethod: "Design-Bid",
+        contractType: "Unit Price",
+        currentPhase: "Design",
+        imageUrl: "https://s3.us-east-1.amazonaws.com/project_image.png",
+        thumbnailImageUrl: "https://s3.us-east-1.amazonaws.com/project_thumbnail_image.png",
+        createdAt: "2018-01-01T12:45:00.000Z",
+        updatedAt: "2019-01-01T12:45:00.000Z",
+        accountId: "d73fc742-4538-401c-8d0f-853b49b750b2",
+        sheetCount: 512,
+        platform: "acc",
+        accessLevels: { projectAdmin: true, projectMember: true }
+      }
+    ]
+  });
+});
+
+
+// --- PRODUCTS LIST ---
+app.get('/construction/admin/v1/accounts/:accountId/users/:userId/products', verifyAccessToken, (req, res) => {
+  res.json({
+    pagination: {
+      limit: 20,
+      offset: 10,
+      totalResults: 121,
+      nextUrl: "https://resource?limit=20&offset=30",
+      previousUrl: "https://resource?limit=20&offset=0"
+    },
+    results: [
+      {
+        key: "assets",
+        icon: "https://s3.us-east-1.amazonaws.com/product_icon.png",
+        name: "Document Management",
+        projectIds: ["3e354e66-ac8b-41dd-9bc1-93fc182c25dd"]
+      }
+    ]
+  });
+});
+
+
+// --- ROLES LIST ---
+app.get('/construction/admin/v1/accounts/:accountId/users/:userId/roles', verifyAccessToken, (req, res) => {
+  res.json({
+    pagination: {
+      limit: 20,
+      offset: 10,
+      totalResults: 121,
+      nextUrl: "https://resource?limit=20&offset=30",
+      previousUrl: "https://resource?limit=20&offset=0"
+    },
+    results: [
+      {
+        id: "287d5cc2-9008-462c-96e5-c9491db85d97",
+        status: "active",
+        name: "Architect",
+        key: "architect",
+        createdAt: "2018-01-01T12:45:00.000Z",
+        updatedAt: "2019-01-01T12:45:00.000Z",
+        projectIds: ["3e354e66-ac8b-41dd-9bc1-93fc182c25dd"]
+      }
+    ]
+  });
+});
+
+
+// --- USER SEARCH ---
+app.get('/hq/v1/accounts/:accountId/users/search', verifyAccessToken, (req, res) => {
+  const { email } = req.query;
+  res.json([
+    {
+      id: "579d4408-39a4-4b3a-9474-6e781e68ab94",
+      account_id: "9dbb160e-b904-458b-bc5c-ed184687592d",
+      status: "pending",
+      role: "account_admin",
+      company_id: "14e95a5e-02eb-49aa-a39a-447d90544873",
+      company_name: "Autodesk",
+      email: email || "john.smith@mail.com",
+      name: "John Smith",
+      nickname: "Johnny",
+      first_name: "John",
+      last_name: "Smith",
+      uid: "L9EBJKCGCXBB",
+      image_url: "http://static-dc.autodesk.net/etc/designs/v201412151200/autodesk/adsk-design/images/autodesk_header_logo_140x23.png",
+      last_sign_in: null,
+      address_line_1: "The Fifth Avenue",
+      address_line_2: "#301",
+      city: "New York",
+      postal_code: "10011",
+      state_or_province: "New York",
+      country: "United States",
+      phone: "(634)329-2353",
+      company: "Autodesk",
+      job_title: "Software Developer",
+      industry: "IT",
+      about_me: "Nothing here",
+      default_role: "BIM Manager",
+      default_role_id: "4e7e02ae-2994-4210-9153-84bfb9a23a63",
+      created_at: "2015-04-29T06:59:05.582Z",
+      updated_at: "2015-04-29T06:59:05.582Z"
+    }
+  ]);
+});
